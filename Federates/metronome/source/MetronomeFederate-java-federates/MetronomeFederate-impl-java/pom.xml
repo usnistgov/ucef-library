@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>gov.nist.hla.federate</groupId>
+        <groupId>org.webgme.guest</groupId>
         <artifactId>MetronomeFederate-java-federates</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>

@@ -1,5 +1,6 @@
 package MetronomeFederate;
 
+import org.cpswt.config.FederateConfig;
 import org.cpswt.config.FederateConfigParser;
 import org.cpswt.hla.base.AdvanceTimeRequest;
 import org.cpswt.utils.CpswtDefaults;
@@ -50,7 +51,6 @@ public class Metronome extends MetronomeBase {
     	logicalTimeSec = configuration.logicaltimesec;
     	ignoreTil = configuration.ignoretil;
 
-
         AdvanceTimeRequest atr = new AdvanceTimeRequest(currentTime);
         putAdvanceTimeRequest(atr);
 
@@ -72,15 +72,9 @@ public class Metronome extends MetronomeBase {
         }
 
         startAdvanceTimeThread();
+        log.info("started logical time progression");
 
-        // this is the exit condition of the following while loop
-        // it is used to break the loop so that latejoiner federates can
-        // notify the federation manager that they left the federation
-        boolean exitCondition = false;
-
-        while (true) {
-            currentTime += super.getStepSize();
-
+        while (!exitCondition) {
             atr.requestSyncStart();
             enteredTimeGrantedState();
 
@@ -116,8 +110,12 @@ public class Metronome extends MetronomeBase {
             }
         }
 
-        // while loop finished, notify FederationManager about resign
-        super.notifyFederationOfResign();
+        // call exitGracefully to shut down federate
+        exitGracefully();
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+        // TODO Perform whatever cleanups needed before exiting the app
+        ////////////////////////////////////////////////////////////////////////////////////////
     }
 
     public static void main(String[] args) {
@@ -127,11 +125,11 @@ public class Metronome extends MetronomeBase {
             MetronomeConfig federateConfig = federateConfigParser.parseArgs(args, MetronomeConfig.class);
             Metronome federate = new Metronome(federateConfig);
             federate.execute();
+            log.info("Done.");
             System.exit(0);
         } catch (Exception e) {
             log.error("There was a problem executing the Metronome federate: {}", e.getMessage());
             log.error(e);
-
             System.exit(1);
         }
     }
