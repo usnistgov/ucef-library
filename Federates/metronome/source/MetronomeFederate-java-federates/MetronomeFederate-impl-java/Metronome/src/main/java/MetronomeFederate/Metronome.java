@@ -24,7 +24,7 @@ public class Metronome extends MetronomeBase {
 
     private final static Logger log = LogManager.getLogger(Metronome.class);
 
-    double currentTime = 0;
+    private double currentTime = 0;
 	private MetronomeConfig configuration;
 	private double startTime;
 	private double stopTime;
@@ -53,8 +53,7 @@ public class Metronome extends MetronomeBase {
         vSimTime.set_startTime( startTime );
         vSimTime.set_stopTime( stopTime);
 
-        vSimTime.sendInteraction(getLRC(), currentTime);
- 
+        vSimTime.sendInteraction(getLRC(), currentTime + getLookAhead());
         log.info(
         	"curentTime: " + currentTime
 			+ ", startTime: " + startTime 
