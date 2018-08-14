@@ -36,9 +36,37 @@ public class Metronome extends MetronomeBase {
         
         this.configuration = params;
     }
+    
+    private void sendSimTime(){
+        ////////////////////////////////////////////////////////////////////////////////////////
+        // TODO send interactions that must be sent every logical time step below.
+        // Set the interaction's parameters.
+    
+        SimTime vSimTime = create_SimTime();
+ 
+        vSimTime.set_actualLogicalGenerationTime( currentTime +1);
+        vSimTime.set_federateFilter("");
+        vSimTime.set_ignoreTil( ignoreTil);
+        //    vSimTime.set_originFed( < YOUR VALUE HERE > );
+        vSimTime.set_secondsPerLogicalTime(logicalTimeSec);
+        //    vSimTime.set_sourceFed( < YOUR VALUE HERE > );
+        vSimTime.set_startTime( startTime );
+        vSimTime.set_stopTime( stopTime);
+
+        vSimTime.sendInteraction(getLRC(), currentTime);
+ 
+        log.info(
+        	"curentTime: " + currentTime
+			+ ", startTime: " + startTime 
+			+ ", ignoreTil: " + ignoreTil 
+			+ ", logicalTimeSec: " + logicalTimeSec 
+			+ ", stopTime: "+ stopTime
+			);
+    }
 
     private void execute() throws Exception {
         if(super.isLateJoiner()) {
+            log.info("turning off time regulation (late joiner)");
             currentTime = super.getLBTS() - super.getLookAhead();
             super.disableTimeRegulation();
         }
@@ -55,8 +83,13 @@ public class Metronome extends MetronomeBase {
         putAdvanceTimeRequest(atr);
 
         if(!super.isLateJoiner()) {
+            log.info("waiting on readyToPopulate...");
             readyToPopulate();
+            log.info("...synchronized on readyToPopulate");
         }
+        
+//        sendSimTime();
+
 
         ///////////////////////////////////////////////////////////////////////
         // Call CheckReceivedSubscriptions(<message>) here to receive
@@ -68,7 +101,9 @@ public class Metronome extends MetronomeBase {
         ///////////////////////////////////////////////////////////////////////
 
         if(!super.isLateJoiner()) {
+            log.info("waiting on readyToRun...");
             readyToRun();
+            log.info("...synchronized on readyToRun");
         }
 
         startAdvanceTimeThread();
@@ -78,35 +113,19 @@ public class Metronome extends MetronomeBase {
             atr.requestSyncStart();
             enteredTimeGrantedState();
 
+            sendSimTime();
+
             ////////////////////////////////////////////////////////////////////////////////////////
-            // TODO send interactions that must be sent every logical time step below.
-            // Set the interaction's parameters.
-        
-            SimTime vSimTime = create_SimTime();
-            vSimTime.set_ignoreTil( ignoreTil);
-            vSimTime.set_secondsPerLogicalTime(logicalTimeSec);
-            vSimTime.set_startTime( startTime );
-            vSimTime.set_stopTime( stopTime);
-            vSimTime.sendInteraction(getLRC(), currentTime);
-        //////////////////////////////////////////////////////////////////////////////////////
-            log.info(
-            	"curentTime: " + currentTime
-				+ ", startTime: " + startTime 
-				+ ", ignoreTil: " + ignoreTil 
-				+ ", logicalTimeSec: " + logicalTimeSec 
-				+ ", stopTime: "+ stopTime
-				);
+            // TODO break here if ready to resign and break out of while loop
+            ////////////////////////////////////////////////////////////////////////////////////////
 
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // DO NOT MODIFY FILE BEYOND THIS LINE
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            AdvanceTimeRequest newATR = new AdvanceTimeRequest(currentTime);
-            putAdvanceTimeRequest(newATR);
-            atr.requestSyncEnd();
-            atr = newATR;
 
-            if(exitCondition) {
-                break;
+            if (!exitCondition) {
+                currentTime += super.getStepSize();
+                AdvanceTimeRequest newATR = new AdvanceTimeRequest(currentTime);
+                putAdvanceTimeRequest(newATR);
+                atr.requestSyncEnd();
+                atr = newATR;
             }
         }
 
