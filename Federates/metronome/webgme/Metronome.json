@@ -1,6 +1,6 @@
 {
   "__OBJECTS__": {
-    "fbf14309-ca94-454d-a092-c4d988628234": {
+    "7e9ebde2-0077-4274-8eaa-4b011fa647cf": {
       "attributes": {
         "name": "Metronome",
         "TimeRegulating": "true",
@@ -20,15 +20,17 @@
       "inputs": [],
       "outputs": [
         {
-          "GUID": "a8caafa4-c90d-4b95-925b-f7450d9540d3"
+          "GUID": "8458d9aa-2c6e-4c26-8e0a-a0b2e806e153"
         }
       ],
+      "objectinputs": [],
+      "objectoutputs": [],
       "RegistryInfo": "",
       "documentation": "No documentation exists yet.",
       "repository": "No repository exists yet.",
-      "GUID": "fbf14309-ca94-454d-a092-c4d988628234"
+      "GUID": "7e9ebde2-0077-4274-8eaa-4b011fa647cf"
     },
-    "844c7bd1-bfcb-44d0-9d5c-2e83bdde31b1": {
+    "d8eccfbe-c287-4a94-9b08-404bb2843484": {
       "attributes": {
         "name": "InteractionRoot",
         "Order": "timestamp",
@@ -37,12 +39,12 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "ed685cd3-15ba-454a-a18a-fc5e3bc1d44f"
+        "GUID": "4d18bdfb-06e7-4939-9db7-76bd243a62e5"
       },
       "parameters": [],
-      "GUID": "844c7bd1-bfcb-44d0-9d5c-2e83bdde31b1"
+      "GUID": "d8eccfbe-c287-4a94-9b08-404bb2843484"
     },
-    "c804fc12-8afc-4eb0-962c-211a5c0bb831": {
+    "f6441578-3602-492f-920e-38975f0ab53f": {
       "attributes": {
         "name": "C2WInteractionRoot",
         "Order": "timestamp",
@@ -51,7 +53,7 @@
         "Delivery": "reliable"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "844c7bd1-bfcb-44d0-9d5c-2e83bdde31b1"
+        "GUID": "d8eccfbe-c287-4a94-9b08-404bb2843484"
       },
       "parameters": [
         {
@@ -75,9 +77,9 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "c804fc12-8afc-4eb0-962c-211a5c0bb831"
+      "GUID": "f6441578-3602-492f-920e-38975f0ab53f"
     },
-    "a8caafa4-c90d-4b95-925b-f7450d9540d3": {
+    "8458d9aa-2c6e-4c26-8e0a-a0b2e806e153": {
       "attributes": {
         "Delivery": "reliable",
         "EnableLogging": "false",
@@ -86,7 +88,7 @@
         "name": "SimTime"
       },
       "__INTERACTION_BASE__": {
-        "GUID": "c804fc12-8afc-4eb0-962c-211a5c0bb831"
+        "GUID": "f6441578-3602-492f-920e-38975f0ab53f"
       },
       "parameters": [
         {
@@ -130,25 +132,27 @@
           "Hidden": "false"
         }
       ],
-      "GUID": "a8caafa4-c90d-4b95-925b-f7450d9540d3"
+      "GUID": "8458d9aa-2c6e-4c26-8e0a-a0b2e806e153"
     }
   },
   "__ROOT_OBJECT__": {
-    "GUID": "fbf14309-ca94-454d-a092-c4d988628234",
+    "GUID": "7e9ebde2-0077-4274-8eaa-4b011fa647cf",
     "name": "Metronome",
     "version": "0.0.1",
     "description": ""
   },
   "Federates": {
-    "fbf14309-ca94-454d-a092-c4d988628234": ""
+    "7e9ebde2-0077-4274-8eaa-4b011fa647cf": ""
   },
   "COAs": {},
   "Experiments": {},
   "Interactions": {
-    "844c7bd1-bfcb-44d0-9d5c-2e83bdde31b1": "",
-    "c804fc12-8afc-4eb0-962c-211a5c0bb831": "",
-    "a8caafa4-c90d-4b95-925b-f7450d9540d3": ""
+    "d8eccfbe-c287-4a94-9b08-404bb2843484": "",
+    "f6441578-3602-492f-920e-38975f0ab53f": "",
+    "8458d9aa-2c6e-4c26-8e0a-a0b2e806e153": ""
   },
+  "Objects": {},
+  "ObjectAttribute": {},
   "Repositories": [],
   "Builds": [],
   "Executions": []

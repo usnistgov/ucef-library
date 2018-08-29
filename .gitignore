@@ -1,4 +1,19 @@
 # Compiled class file
+target/
+bin/
+logs/
+.classpath
+.settings/
+.DS_Store
+*.retry
+dependency-reduced-pom.xml
+*.*~
+Xterm.log.*
+.gitignore
+
+# we are using maven so .project should not be stored
+.project
+
 *.class
 
 # Log file
