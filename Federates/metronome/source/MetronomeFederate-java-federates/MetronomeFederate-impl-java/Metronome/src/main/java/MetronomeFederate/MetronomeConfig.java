@@ -5,14 +5,17 @@ import org.cpswt.config.FederateParameter;
 
 public class MetronomeConfig extends FederateConfig {
 	@FederateParameter
-	public double starttime;
+	public long starttime;
 	
 	@FederateParameter
-	public double stoptime;
+	public long stoptime;
 	
 	@FederateParameter
 	public double logicaltimesec;
 	
 	@FederateParameter
 	public double ignoretil;
+
+    @FederateParameter
+    public String timezone;
 }
