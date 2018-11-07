@@ -26,10 +26,11 @@ public class Metronome extends MetronomeBase {
 
     private double currentTime = 0;
 	private MetronomeConfig configuration;
-	private double startTime;
-	private double stopTime;
+	private long startTime;
+	private long stopTime;
 	private double logicalTimeSec;
 	private double ignoreTil;
+	private String timeZone;
 
     public Metronome(MetronomeConfig params) throws Exception {
         super(params);
@@ -38,29 +39,41 @@ public class Metronome extends MetronomeBase {
     }
     
     private void sendSimTime(){
-        ////////////////////////////////////////////////////////////////////////////////////////
-        // TODO send interactions that must be sent every logical time step below.
-        // Set the interaction's parameters.
-    
-        SimTime vSimTime = create_SimTime();
- 
-        vSimTime.set_actualLogicalGenerationTime( currentTime +1);
-        vSimTime.set_federateFilter("");
-        vSimTime.set_ignoreTil( ignoreTil);
-        //    vSimTime.set_originFed( < YOUR VALUE HERE > );
-        vSimTime.set_secondsPerLogicalTime(logicalTimeSec);
-        //    vSimTime.set_sourceFed( < YOUR VALUE HERE > );
-        vSimTime.set_startTime( startTime );
-        vSimTime.set_stopTime( stopTime);
-
-        vSimTime.sendInteraction(getLRC(), currentTime + getLookAhead());
+        SimTime simTime = create_SimTime();
+        simTime.set_unixTimeStart(startTime);
+        simTime.set_unixTimeStop(stopTime);
+        simTime.set_timeScale(logicalTimeSec);
+        simTime.set_ignoreUntil(ignoreTil);
+        simTime.set_timeZone(timeZone);
+        simTime.sendInteraction(getLRC(), currentTime + getLookAhead());
+        
         log.info(
         	"curentTime: " + currentTime
 			+ ", startTime: " + startTime 
 			+ ", ignoreTil: " + ignoreTil 
 			+ ", logicalTimeSec: " + logicalTimeSec 
-			+ ", stopTime: "+ stopTime
+			+ ", stopTime: " + stopTime
+			+ ", timeZone: " + timeZone
 			);
+    }
+    
+    private void sendSimTimeRO(){
+        SimTime simTime = create_SimTime();
+        simTime.set_unixTimeStart(startTime);
+        simTime.set_unixTimeStop(stopTime);
+        simTime.set_timeScale(logicalTimeSec);
+        simTime.set_ignoreUntil(ignoreTil);
+        simTime.set_timeZone(timeZone);
+        simTime.sendInteraction(getLRC());
+        
+        log.info(
+            "curentTime: " + currentTime
+            + ", startTime: " + startTime 
+            + ", ignoreTil: " + ignoreTil 
+            + ", logicalTimeSec: " + logicalTimeSec 
+            + ", stopTime: " + stopTime
+            + ", timeZone: " + timeZone
+            );
     }
 
     private void execute() throws Exception {
@@ -77,6 +90,7 @@ public class Metronome extends MetronomeBase {
     	stopTime = configuration.stoptime;
     	logicalTimeSec = configuration.logicaltimesec;
     	ignoreTil = configuration.ignoretil;
+    	timeZone = configuration.timezone;
 
         AdvanceTimeRequest atr = new AdvanceTimeRequest(currentTime);
         putAdvanceTimeRequest(atr);
@@ -87,7 +101,7 @@ public class Metronome extends MetronomeBase {
             log.info("...synchronized on readyToPopulate");
         }
         
-//        sendSimTime();
+        sendSimTimeRO();
 
 
         ///////////////////////////////////////////////////////////////////////
